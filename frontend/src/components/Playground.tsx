@@ -29,6 +29,11 @@ const Playground = () => {
       defaultLanguage="sql"
       value={tabs.find((tab) => tab.id === activeTab)?.code || ""}
       theme="vs-dark"
+      options={{
+        fontFamily: "JetBrains Mono",
+        fontSize: 14,
+        padding: { top: 50, bottom: 50 },
+      }}
     />
   );
 };
