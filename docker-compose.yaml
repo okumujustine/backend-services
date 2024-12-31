@@ -16,8 +16,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: backend
-    # volumes:
-    #   - ./backend:/app
+    volumes:
+      - ./backend:/app
     ports:
       - "8003:8000"
     environment:
@@ -34,6 +34,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: frontend
+    volumes:
+      - ./frontend:/app
     ports:
       - "3003:3000"
     depends_on:
