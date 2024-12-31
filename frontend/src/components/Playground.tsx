@@ -1,11 +1,14 @@
 "use client";
 import Editor, { useMonaco } from "@monaco-editor/react";
+import { useTheme } from "next-themes";
 import { useState } from "react";
 // import { FaPlay, FaPlus, FaTimes } from "react-icons/fa";
 
 type TStringOrUndefined = string | undefined;
 
 const Playground = () => {
+  const { theme } = useTheme()
+
   const [tabs, setTabs] = useState([{ id: 1, title: "Query 1", code: "" }]);
   const [activeTab, setActiveTab] = useState(1);
 
@@ -28,7 +31,7 @@ const Playground = () => {
       width="100%"
       defaultLanguage="sql"
       value={tabs.find((tab) => tab.id === activeTab)?.code || ""}
-      theme="vs-dark"
+      theme={theme === "light" ? "vs-dark" : "light"}
       options={{
         fontFamily: "JetBrains Mono",
         fontSize: 14,
