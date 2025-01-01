@@ -24,17 +24,23 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'), 
+]
 
+# backend services urls
+urlpatterns += [
     # jwt auth urls
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), 
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/query/', include('query.urls'), name='query'),
+    path("api/v1/db_table/", include("db_table.urls"), name="db_table"),
+]
 
-    # apps urls
-    path("api/", include("db_table.urls")),
-
+# external apps urls
+urlpatterns += [
     # explorer urls
     path('explorer/', include('explorer.urls'))
-] 
+]
+
 urlpatterns += debug_toolbar_urls()
 urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
