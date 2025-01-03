@@ -30,10 +30,10 @@ urlpatterns = [
 # backend services urls
 urlpatterns += [
     # jwt auth urls
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/v1/query/', include('query.urls'), name='query'),
-    path("api/v1/db_table/", include("db_table.urls"), name="db_table"),
+    path("api/v1/db-table/", include("db_table.urls"), name="db_table"),
 ]
 
 # external apps urls

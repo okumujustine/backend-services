@@ -4,5 +4,5 @@ from .views import QueryView
 
 
 urlpatterns = [
-    path('query/', QueryView.as_view(), name='query'),
+    path('execute/', QueryView.as_view(), name='query-execute'),
 ]

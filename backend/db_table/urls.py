@@ -6,5 +6,5 @@ from db_table.views import TableDataTypeViewSet
 
 
 urlpatterns = [
-    path("db_table/", TableDataTypeViewSet.as_view({"get": "list"})),
+    path("list/", TableDataTypeViewSet.as_view({"get": "list"})),
 ]
