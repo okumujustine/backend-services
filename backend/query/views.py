@@ -22,4 +22,4 @@ class QueryView(APIView):
     
         query = serializer.validated_data['query']
         print(query)
-        return Response({'query': query}, status=status.HTTP_200_OK)
+        return Response({'data': query}, status=status.HTTP_200_OK)
