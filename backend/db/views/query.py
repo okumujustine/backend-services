@@ -1,19 +1,9 @@
+from db.serializers.query import QuerySerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.utils.decorators import method_decorator
-from drf_yasg.utils import swagger_auto_schema
 
-from .serializer import QuerySerializer
 
-# Create your views here.
-@method_decorator(
-    name='post',
-    decorator=swagger_auto_schema(
-        request_body=QuerySerializer,
-        responses={200: QuerySerializer}
-    )
-)
 class QueryView(APIView):
     def post(self, request):
         serializer = QuerySerializer(data=request.data)

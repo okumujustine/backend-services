@@ -1,9 +1,9 @@
+from db.models import TableDataType
+from db.serializers.table import TableDataTypeSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from db_table.models import TableDataType
-from db_table.serializer import TableDataTypeSerializer
 
 # Create your views here.
 class TableDataTypeViewSet(viewsets.ModelViewSet):
@@ -12,4 +12,3 @@ class TableDataTypeViewSet(viewsets.ModelViewSet):
     
     queryset = TableDataType.objects.all()
     serializer_class = TableDataTypeSerializer
-

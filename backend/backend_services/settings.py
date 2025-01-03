@@ -35,9 +35,8 @@ INSTALLED_APPS = [
     "silk",
     "explorer",
 
-    "db_table",
+    "db",
     "custom_user",
-    "query",
 ]
 
 MIDDLEWARE = [
