@@ -32,7 +32,7 @@ urlpatterns += [
     # jwt auth urls
     path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/v1/db/', include('db.urls'), name='db')
+    path('api/v1/db/', include('applications.db.urls'), name='db')
 ]
 
 # external apps urls

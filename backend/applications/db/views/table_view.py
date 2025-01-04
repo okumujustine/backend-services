@@ -1,5 +1,5 @@
-from db.models import TableDataType
-from db.serializers.table import TableDataTypeSerializer
+from applications.db.models import TableDataType
+from applications.db.serializers.table_serializer import TableDataTypeSerializer
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication

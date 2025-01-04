@@ -35,8 +35,8 @@ INSTALLED_APPS = [
     "silk",
     "explorer",
 
-    "db",
-    "custom_user",
+    "applications.db",
+    "applications.custom_user",
 ]
 
 MIDDLEWARE = [
@@ -151,6 +151,7 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME_LATE_USER': timedelta(days=30),
 }
 
+# setting up custom user model
 AUTH_USER_MODEL = "custom_user.CustomUser"
 
 SWAGGER_SETTINGS = {
