@@ -25,17 +25,23 @@ const Playground = () => {
 
   return (
     <Editor
-      className="p-3"
+      className="p-3 border border-gray-300 rounded-lg"
       height="500px"
       onChange={onChangeEditor}
       width="100%"
       defaultLanguage="sql"
       value={tabs.find((tab) => tab.id === activeTab)?.code || ""}
-      theme={theme === "light" ? "vs-dark" : "light"}
+      theme={theme === "light" ? "light" : "vs-dark"}
       options={{
         fontFamily: "JetBrains Mono",
         fontSize: 14,
         padding: { top: 50, bottom: 50 },
+        autoClosingBrackets: "always",
+        autoClosingOvertype: "always",
+        autoClosingQuotes: "always",
+        language: "sql",
+        lineDecorationsWidth: 10,
+        overviewRulerBorder: false,
       }}
     />
   );
