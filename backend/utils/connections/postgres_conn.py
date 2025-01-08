@@ -1,3 +1,4 @@
+from typing import Any
 import psycopg2
 import psycopg2.pool
 
@@ -17,7 +18,7 @@ class PostgresConnection:
         self.port = port
         self.connection_pool = None
     
-    def connect(self) -> None:
+    def connect(self) -> Any:
         if self.connection_pool:
             print("returning existing connection")
             return self.connection_pool

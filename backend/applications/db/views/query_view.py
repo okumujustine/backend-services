@@ -1,4 +1,3 @@
-from webbrowser import get
 from applications.db.serializers.query_serializer import QuerySerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -21,5 +20,9 @@ class QueryView(APIView):
         conn = get_object_or_404(DbConnectionModel, user=request.user, name="postgres")
 
         db_action_result = db_activity(conn.to_connection_dict(), query)
-        # print(db_action_result)
-        return Response({'data': query}, status=status.HTTP_200_OK)
+        if 'error' in db_action_result:
+            if db_action_result['status'] == 400:
+                return Response(db_action_result, status=db_action_result['status'])
+            return Response(db_action_result, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        return Response({'result': db_action_result}, status=status.HTTP_200_OK)
