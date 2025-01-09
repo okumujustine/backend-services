@@ -1,8 +1,7 @@
 from django.urls import path
-
 from applications.db.views.table_view import TableDataTypeViewSet
 from applications.db.views.query_view import QueryView
-from applications.db.views.db_view import ConnectionViewSet
+from applications.db.views.db_view import ConnectionViewSet, get_database_schemas
 
 
 urlpatterns = [
@@ -11,10 +10,11 @@ urlpatterns = [
         "post": "create",
         "put": "update",
     }), name='connection-add'),
+    path('schema/', get_database_schemas, name="get_database_schemas")
 ]
 
 urlpatterns += [
-    path('query/', QueryView.as_view(), name='query'),
+    path('query/<str:db_name>', QueryView.as_view(), name='query'),
 ]
 
 urlpatterns += [

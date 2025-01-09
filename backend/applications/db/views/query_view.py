@@ -9,7 +9,7 @@ from utils.connections.conn_util import db_activity
 
 
 class QueryView(APIView):
-    def post(self, request):
+    def post(self, request, db_name):
         serializer = QuerySerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -17,7 +17,7 @@ class QueryView(APIView):
         query = serializer.validated_data['query']
 
         # get connection from the database
-        conn = get_object_or_404(DbConnectionModel, user=request.user, name="postgres")
+        conn = get_object_or_404(DbConnectionModel, user=request.user, name=db_name)
 
         db_action_result = db_activity(conn.to_connection_dict(), query)
         if 'error' in db_action_result:
