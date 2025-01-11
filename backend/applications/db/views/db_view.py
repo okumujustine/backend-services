@@ -1,9 +1,11 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from applications.db.models import DbConnectionModel
 from applications.db.serializers.db_serializer import ConnectionSerializer
+from utils.connections.get_schemas import list_schemas_tables_columns
 
 
 class ConnectionViewSet(viewsets.ModelViewSet):
@@ -26,7 +28,7 @@ class ConnectionViewSet(viewsets.ModelViewSet):
 def get_database_schemas(request):
     """
     Gets all the db schema by provided db_name
-    GET /query/?db_name=abc
+    GET /query/?id_name=abc
     """
     # TODO: track user's specific table and only display their schemas
     # - when a user login, we create them a schema and keep track of the svhema in  user svhema databases.
@@ -35,10 +37,12 @@ def get_database_schemas(request):
     # when a user make a request, we give them their schema from cache or retrive a new one from the db 
     # and list them schema (databases, tables)
     if request.method == 'GET':
-        db_name: str = request.query_params.get("db_name", None)
-        if not db_name:
-            return Response({ "result": {"error": "Database name must be provided as request parameter"} })
+        id_name: str = request.query_params.get("id_name", None)
+        if not id_name:
+            return Response({ "result": {"error": "Database id_name must be provided as request parameter"} })
 
-        # TODO: get all the schemas
+        conn = get_object_or_404(DbConnectionModel, user=request.user, id_name=id_name)
 
-        return Response({ "result": "cool"}, status=status.HTTP_200_OK)
+        db_schema_list = list_schemas_tables_columns(conn.to_connection_dict())
+
+        return Response({ "result": db_schema_list}, status=status.HTTP_200_OK)

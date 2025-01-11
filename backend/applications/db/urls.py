@@ -14,7 +14,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path('query/<str:db_name>', QueryView.as_view(), name='query'),
+    path('query/<str:id_name>', QueryView.as_view(), name='query'),
 ]
 
 urlpatterns += [

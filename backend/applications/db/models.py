@@ -1,10 +1,12 @@
+import uuid
 from django.db import models
 from django.contrib.auth import get_user_model
 
 UserModel = get_user_model()
 
 class DbConnectionModel(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50)
+    id_name = models.CharField(max_length=100, default=uuid.uuid4().hex[:8])
     description = models.CharField(max_length=200, blank=True, null=True)
     host = models.CharField(max_length=100)
     port = models.IntegerField()
@@ -20,6 +22,9 @@ class DbConnectionModel(models.Model):
         db_table = 'connection'
         verbose_name = 'Connection'
         verbose_name_plural = 'Connections'
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'id_name'], name="unique_id_name_per_user")
+        ]
 
     def to_connection_dict(self):
         return {

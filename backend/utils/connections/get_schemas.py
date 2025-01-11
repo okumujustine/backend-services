@@ -1,16 +1,32 @@
 
 
-def list_schemas_tables_columns(conn):
+from utils.connections.postgres_conn import PostgresConnection
+
+
+def list_schemas_tables_columns(connection_object: dict[str, str]):
     """
     Takes an existing psycopg2 connection instance and retrieves
     all schemas (except system schemas), their tables, and table 
-    columns with data types.
+    columns with data types, and then restructures the data into a 
+    nested dictionary for the frontend.
+
+    Returns a dictionary in the format:
+    {
+        "schema1": {
+            "table1": [
+                {"column_name": "col1", "data_type": "datatype1"},
+                {"column_name": "col2", "data_type": "datatype2"},
+                ...
+            ],
+            "table2": [ ... ]
+        },
+        "schema2": { ... }
+    }
     """
+    conn = PostgresConnection(**connection_object).connect()
     cur = conn.cursor()
+    result = {}
     try:
-        # Create a cursor from the existing connection
-        # Query the information_schema.columns view
-        # to get schema, table, column, and data type
         query = """
             SELECT
                 table_schema,
@@ -24,15 +40,30 @@ def list_schemas_tables_columns(conn):
         cur.execute(query)
         rows = cur.fetchall()
 
-        # Print or process the results
+        # Process each row to build the nested dictionary
         for row in rows:
             schema_name, table_name, column_name, data_type = row
-            print(f"Schema: {schema_name} | Table: {table_name} | "
-                  f"Column: {column_name} | Data Type: {data_type}")
+
+            # Create the schema entry if it doesn't exist
+            if schema_name not in result:
+                result[schema_name] = {}
+
+            # Create the table entry if it doesn't exist
+            if table_name not in result[schema_name]:
+                result[schema_name][table_name] = []
+
+            # Append the column information to the table's list of columns
+            result[schema_name][table_name].append({
+                "column_name": column_name,
+                "data_type": data_type
+            })
+
+        return result
 
     except Exception as e:
         print(f"Error: {e}")
+        return None
+
     finally:
-        # Optionally close the cursor if you're done with it
-    
         cur.close()
+

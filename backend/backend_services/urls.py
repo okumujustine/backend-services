@@ -6,6 +6,8 @@ from rest_framework import permissions
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from debug_toolbar.toolbar import debug_toolbar_urls
 
+from applications.custom_user.views import RegisterView, register_user
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -30,6 +32,8 @@ urlpatterns = [
 # backend services urls
 urlpatterns += [
     # jwt auth urls
+    path('api/v1/user-auth/register/', register_user, name='custom-user-auth-register'),
+    path('api/v1/register/', RegisterView.as_view(), name="sign_up"),
     path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/v1/db/', include('applications.db.urls'), name='db')
