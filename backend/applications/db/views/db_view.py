@@ -29,6 +29,11 @@ def get_database_schemas(request):
     GET /query/?db_name=abc
     """
     # TODO: track user's specific table and only display their schemas
+    # - when a user login, we create them a schema and keep track of the svhema in  user svhema databases.
+    # - users can have multiple schemas
+    # the we can always store the user schema and cache it.
+    # when a user make a request, we give them their schema from cache or retrive a new one from the db 
+    # and list them schema (databases, tables)
     if request.method == 'GET':
         db_name: str = request.query_params.get("db_name", None)
         if not db_name:
