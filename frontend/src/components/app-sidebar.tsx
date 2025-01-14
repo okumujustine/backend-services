@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useState } from "react";
 import {
   AudioWaveform,
   BookOpen,
@@ -25,6 +25,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { SchemaExplorer } from "./schema-explorer"
 
 // This is sample data.
 const data = {
@@ -75,13 +76,23 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+  const [selectedSchema, setSelectedSchema] = useState("public");
+
+  const schemas = ["public", "auth", "storage"];
+  const tables = {
+    public: ["users", "posts", "comments"],
+    auth: ["users", "sessions"],
+    storage: ["objects", "buckets"]
+  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <SchemaExplorer/>
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

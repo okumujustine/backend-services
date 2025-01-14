@@ -235,5 +235,5 @@ interface CachedQuery {
   
   async function getSqlFormat(prompt: string): Promise<string> {
     await new Promise(resolve => setTimeout(resolve, 1000))
-    return 'SELECT * FROM table WHERE condition = true;'
+    return 'SELECT * FROM users ORDER BY id DESC LIMIT 5'
   }
