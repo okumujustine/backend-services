@@ -12,7 +12,7 @@ export default function QueryEditor({ value, setValue }: IQueryEditorProps) {
 
   return (
     <Editor
-      height="500px"
+      height="400px"
       onChange={(val) => setValue(val ?? "")}
       width="100%"
       defaultLanguage="sql"

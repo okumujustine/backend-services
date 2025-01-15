@@ -23,11 +23,12 @@ import { getQueryFromLLMRequest } from "@/server/ai/promptQuery";
 
 interface IAiPromptDialog {
   onGetSqlQueryFormat: (prompt: string) => void;
+  isOpen: boolean;
+  setIsOpen: () => void;
 }
 
-export function AiPromptDialog({ onGetSqlQueryFormat }: IAiPromptDialog) {
+export function AiPromptDialog({ onGetSqlQueryFormat, isOpen, setIsOpen }: IAiPromptDialog) {
   const [prompt, setPrompt] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleExecute = async (e: React.FormEvent) => {
@@ -51,18 +52,11 @@ export function AiPromptDialog({ onGetSqlQueryFormat }: IAiPromptDialog) {
       alert("An error occurred while generating SQL format.");
     } finally {
       setIsLoading(false);
-      setIsOpen(false);
     }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className="gap-2">
-          <Sparkles className="h-4 w-4" />
-          Ask AI
-        </Button>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -77,10 +71,7 @@ export function AiPromptDialog({ onGetSqlQueryFormat }: IAiPromptDialog) {
             <div className="relative">
               <textarea
                 value={prompt}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setPrompt(value);
-                }}
+                onChange={(e) => setPrompt(e.target.value)}
                 placeholder="Enter your question or prompt here..."
                 className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
                 style={{ minHeight: "120px" }}
