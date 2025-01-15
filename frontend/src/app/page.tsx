@@ -30,16 +30,21 @@ import { useState } from "react";
 import { FaPlay, FaPlus, FaTimes } from "react-icons/fa";
 
 export default function Page() {
-  const [value, setValue] = useState<string | undefined>("");
+  
   const [responseData, setResponseData] = useState<any | undefined>();
+  const [currenValue, setCurrentValue] = useState("")
 
   const onExecuteQuery = async () => {
     setResponseData(undefined);
-    if (!value) return;
+    if (!currenValue) return;
 
-    const resp = await executeQueryRequest(value);
+    const resp = await executeQueryRequest(currenValue);
     setResponseData(resp);
   };
+
+  const getCurrentValue = (currentValue: string ) => {
+    setCurrentValue(currentValue)
+  }
 
   return (
     <SidebarProvider>
@@ -65,13 +70,12 @@ export default function Page() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="flex-1 rounded-xl bg-muted/50 p-3">
-
             <Button className="mb-1" onClick={onExecuteQuery}>
-              <FaPlay  />
+              <FaPlay />
               Execute
             </Button>
             <div className="mb-5">
-              <Playground value={value} setValue={setValue} />
+              <Playground onGetCurrentValue={getCurrentValue} />
             </div>
             {responseData?.error ? (
               <Alert variant="destructive">

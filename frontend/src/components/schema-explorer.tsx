@@ -100,7 +100,7 @@ export function SchemaExplorer() {
   return (
     <div className="p-2 space-y-1">
       {schemas.map((schema) => (
-        <div className="space-y-1">
+        <div className="space-y-1" key={schema.title}>
           <div
             className="flex items-center cursor-pointer hover:bg-accent h-9 px-2 rounded-sm"
             onClick={() => expandSchemas(schema.id)}
@@ -118,6 +118,7 @@ export function SchemaExplorer() {
             schema.tables.map((table) => (
               <div
                 className="ml-4 space-y-1"
+                key={table.title}
                 onClick={() => expandTable(constructExpenadedTableKey(table))}
               >
                 <div className="flex items-center cursor-pointer text-xs">
@@ -131,7 +132,7 @@ export function SchemaExplorer() {
                 </div>
                 {isExpandedTable(constructExpenadedTableKey(table)) &&
                   table.columns.map((column) => (
-                    <div className="space-y-1">
+                    <div className="space-y-1" key={column.name}>
                       <div
                         key={column.name}
                         className="flex items-center text-xs text-muted-foreground py-1 px-2 hover:bg-accent hover:text-accent-foreground rounded-sm cursor-pointer"

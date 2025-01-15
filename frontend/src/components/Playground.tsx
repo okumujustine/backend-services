@@ -1,16 +1,31 @@
 "use client";
 
+import { useState } from "react";
 import { AiPromptDialog } from "./prompt-ai";
-// import 'monaco-sql-languages/esm/languages/pgsql/pgsql.contribution';
 import QueryEditor from "./query-editor";
-// import PromptAi from './prompt-ai';
 
+interface IPlayground {
+  onGetCurrentValue: (currentValue: string) => void;
+}
 
-const Playground = ({ value, setValue }: any) => {
+const Playground = ({ onGetCurrentValue }: IPlayground) => {
+  const [value, setValue] = useState<string | undefined>("");
+
+  const onGetSqlQueryFormat = (sqlQueryFormat: string) => {
+    setValue(sqlQueryFormat);
+    onGetCurrentValue(sqlQueryFormat)
+  };
+
   return (
     <div>
-      <AiPromptDialog />
-      <QueryEditor value={value} setValue={setValue}  />
+      <AiPromptDialog onGetSqlQueryFormat={onGetSqlQueryFormat} />
+      <QueryEditor
+        value={value}
+        setValue={(value) => {
+          setValue(value);
+          onGetCurrentValue(value);
+        }}
+      />
     </div>
   );
 };
