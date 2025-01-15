@@ -36,7 +36,12 @@ urlpatterns += [
     path('api/v1/register/', RegisterView.as_view(), name="sign_up"),
     path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/v1/db/', include('applications.db.urls'), name='db')
+
+    # db app url path
+    path('api/v1/db/', include('applications.db.urls'), name='db'),
+
+    # ai app url path
+    path('api/v1/ai/', include('applications.ai.urls'), name='ai')
 ]
 
 # external apps urls

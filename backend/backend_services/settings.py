@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     "applications.db",
     "applications.custom_user",
+    "applications.ai"
 ]
 
 MIDDLEWARE = [
@@ -195,3 +196,7 @@ INTERNAL_IPS = [
 #         },
 #     },
 # }
+
+
+# custom keys
+OPENAI_API_KEY=os.environ.get('OPENAI_API_KEY', '')
