@@ -11,11 +11,15 @@ import {
   Zap,
   Table2,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { SidebarMenu } from "@/components/ui/sidebar";
+import { useQuery } from "@tanstack/react-query";
+import { customTanstackey } from "@/tangstack/const";
+import { fetchSchemas } from "@/server/db/getSchemaStructure";
 
 export function SchemaExplorer() {
+
+
+  // TODO: handle errors
+
   const [expandedSchemas, setExpandedSchemas] = useState<
     Record<number, Boolean>
   >({});
@@ -23,45 +27,8 @@ export function SchemaExplorer() {
     {}
   );
 
-  const schemas = [
-    {
-      id: 1,
-      title: "Schema one",
-      tables: [
-        {
-          id: 1,
-          title: "table one",
-          columns: [
-            { name: "id", type: "uuid", nullable: false, isPrimary: true },
-            { name: "email", type: "text", nullable: false, isPrimary: false },
-            { name: "name", type: "text", nullable: true, isPrimary: false },
-          ],
-        },
-        {
-          id: 2,
-          title: "table two",
-          columns: [
-            { name: "id", type: "uuid", nullable: false, isPrimary: true },
-            {
-              name: "user_id",
-              type: "uuid",
-              nullable: false,
-              isPrimary: false,
-            },
-            { name: "title", type: "text", nullable: false, isPrimary: false },
-          ],
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Schema two",
-      tables: [
-        { id: 1, title: "table three", columns: [] },
-        { id: 2, title: "table four", columns: [] },
-      ],
-    },
-  ];
+  const { isLoading, data } = useQuery({ queryKey: [customTanstackey.DB_SCHEMAS], queryFn: () => fetchSchemas() })
+  const schemas: I_Schema[] = data["result"]
 
   const isExpandedSchema = (schemaId: number) => {
     return expandedSchemas[schemaId] == true;
@@ -99,7 +66,7 @@ export function SchemaExplorer() {
 
   return (
     <div className="p-2 space-y-1">
-      {schemas.map((schema) => (
+      {!isLoading && schemas.map((schema) => (
         <div className="space-y-1" key={schema.title}>
           <div
             className="flex items-center cursor-pointer hover:bg-accent h-9 px-2 rounded-sm"
