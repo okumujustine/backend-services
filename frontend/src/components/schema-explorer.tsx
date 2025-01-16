@@ -28,7 +28,7 @@ export function SchemaExplorer() {
   );
 
   const { isLoading, data } = useQuery({ queryKey: [customTanstackey.DB_SCHEMAS], queryFn: () => fetchSchemas() })
-  const schemas: I_Schema[] = data["result"]
+  const schemas: I_Schema[] = data?.result
 
   const isExpandedSchema = (schemaId: number) => {
     return expandedSchemas[schemaId] == true;

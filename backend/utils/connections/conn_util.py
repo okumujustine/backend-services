@@ -32,3 +32,14 @@ def db_activity(connection_object: dict[str, str], query: str) -> Any:
         return {'error': str(e), "status":500}
     finally:
         cursor.close()
+
+def graphql_db_activity(connection_object: dict[str, str], query: str) -> Any:
+    pg_conn = PostgresConnection(**connection_object).connect()
+    pg_conn.autocommit = True
+    cursor = pg_conn.cursor()
+
+    cursor.execute(query)
+    columns = [desc[0] for desc in cursor.description]
+    rows = cursor.fetchall()
+
+    return {"rows": rows, "columns": columns}

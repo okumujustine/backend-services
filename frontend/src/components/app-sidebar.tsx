@@ -6,6 +6,7 @@ import {
   BookOpen,
   Bot,
   Command,
+  DatabaseZapIcon,
   Frame,
   GalleryVerticalEnd,
   Map,
@@ -17,7 +18,7 @@ import {
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { DBConnectionSwitcher } from "@/components/db-connection-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -34,23 +35,6 @@ const data = {
     email: "m@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
   navMain: [
     {
       title: "Playground",
@@ -86,10 +70,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     storage: ["objects", "buckets"]
   };
 
+  const connections = [
+    {
+      name: "Database one",
+      type: "connection 1",
+    },
+    {
+      name: "Database two",
+      type: "connection 2",
+    }
+  ]
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <DBConnectionSwitcher connections={connections} />
       </SidebarHeader>
       <SidebarContent>
         <SchemaExplorer/>

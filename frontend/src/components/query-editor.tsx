@@ -1,4 +1,6 @@
 import React from "react";
+// import { LanguageIdEnum } from 'monaco-sql-languages';
+
 import Editor from "@monaco-editor/react";
 import { useTheme } from "next-themes";
 
@@ -15,9 +17,11 @@ export default function QueryEditor({ value, setValue }: IQueryEditorProps) {
       height="400px"
       onChange={(val) => setValue(val ?? "")}
       width="100%"
-      defaultLanguage="sql"
+      language="pgsql"
       value={value}
-      theme={theme === "light" ? "light" : "vs-dark"}
+      theme={
+        theme === "light" ? "light" : "vs-dark"
+      }
       options={{
         fontFamily: "JetBrains Mono",
         fontSize: 14,
@@ -25,9 +29,10 @@ export default function QueryEditor({ value, setValue }: IQueryEditorProps) {
         autoClosingBrackets: "always",
         autoClosingOvertype: "always",
         autoClosingQuotes: "always",
-        language: "sql",
         lineDecorationsWidth: 10,
         overviewRulerBorder: false,
+        tabCompletion: "on",
+        autoIndent: "advanced",
       }}
     />
   );

@@ -35,7 +35,7 @@ class PostgresConnection:
         try:
             conn = self.connection_pool.getconn()
             if conn:
-                print("Connection successful")
+                print("Connection successful to db")
                 return conn
         except Exception as e:
             print(f"Error: {e}")

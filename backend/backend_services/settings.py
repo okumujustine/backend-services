@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     "silk",
     "explorer",
     "corsheaders",
+    "graphene_django",
+    "django_extensions",
 
     "applications.db",
     "applications.custom_user",
