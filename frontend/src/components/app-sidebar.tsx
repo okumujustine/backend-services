@@ -11,6 +11,7 @@ import {
   GalleryVerticalEnd,
   Map,
   PieChart,
+  PlaySquare,
   Settings2,
   SquareTerminal,
 } from "lucide-react"
@@ -27,6 +28,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import { SchemaExplorer } from "./schema-explorer"
+import Link from "next/link";
 
 // This is sample data.
 const data = {
@@ -88,6 +90,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <SchemaExplorer/>
+        <Link href="/dashboard/api/graphql/console" className="mx-4 space-y-1">
+          <div className="flex items-center">
+            <PlaySquare className="h-4 w-4 mr-2 "/>
+            <span>graphql</span>
+          </div>
+        </Link>
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

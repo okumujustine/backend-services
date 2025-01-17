@@ -172,9 +172,10 @@ SWAGGER_SETTINGS = {
     }
 }
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
+# TODO: uncomment this to allow debug toolbar work well
+# INTERNAL_IPS = [
+#     "127.0.0.1",
+# ]
 
 # settings.py
 
@@ -202,3 +203,5 @@ INTERNAL_IPS = [
 
 # custom keys
 OPENAI_API_KEY=os.environ.get('OPENAI_API_KEY', '')
+
+# TODO: ignore django debug toolbar for the graphql api
