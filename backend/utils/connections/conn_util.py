@@ -15,16 +15,19 @@ def db_activity(connection_object: dict[str, str], query: str) -> Any:
         end_time = time.perf_counter()
 
         execution_time = end_time - start_time
+        status_message = ""
 
         if cursor.description:
             rows = cursor.fetchall()
             columns = [desc[0] for desc in cursor.description]
             result_rows = [dict(zip(columns, row)) for row in rows]
             result = {"columns": columns, "rows": result_rows}
+            status_message = cursor.statusmessage
             return {"data": result, "execution_time": execution_time}
         else:
             rowcount = cursor.rowcount
-            return {"rows_affected": rowcount, "execution_time": execution_time}
+            status_message = cursor.statusmessage
+            return {"rows_affected": rowcount, "execution_time": execution_time, "status_message": status_message}
     except psycopg2.Error as e:
         return {'error': str(e), "status":400}
     

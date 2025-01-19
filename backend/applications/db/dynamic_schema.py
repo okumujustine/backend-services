@@ -1,38 +1,10 @@
+from django.core.cache import cache
 from django.shortcuts import get_object_or_404
 from graphene import List, Schema, String, Int, Float, Date, ObjectType
 
 from applications.db.models import DbConnectionModel
 from utils.connections.conn_util import graphql_db_activity
-from utils.connections.get_schemas import list_schemas_tables_columns
-
-def get_db_schema():
-    
-    return {
-        "public": {
-            "sales": [
-                {"column_name": "sale_id", "data_type": "integer"},
-                {"column_name": "sale_date", "data_type": "date"},
-                {"column_name": "item_name", "data_type": "character varying"},
-                {"column_name": "quantity", "data_type": "integer"},
-                {"column_name": "price", "data_type": "numeric"}
-            ],
-            "sales2": [
-                {"column_name": "sale_id", "data_type": "integer"},
-                {"column_name": "sale_date", "data_type": "date"},
-                {"column_name": "item_name", "data_type": "character varying"},
-                {"column_name": "quantity", "data_type": "integer"},
-                {"column_name": "price", "data_type": "numeric"}
-            ],
-        "users": [
-            { "column_name": "id", "data_type": "serial" },
-            { "column_name": "username", "data_type": "character varying(50)" },
-            { "column_name": "email", "data_type": "character varying(100)" },
-            { "column_name": "password", "data_type": "character varying(255)" },
-            { "column_name": "created_at", "data_type": "date" },
-            { "column_name": "updated_at", "data_type": "date" }
-        ]
-        }
-    }
+from utils.connections.get_graphql_db_schema import db_schema_for_graphql
 
 POSTGRES_TYPE_MAPPING_TO_GRAPHENE_TYPE_MAPPING = {
     "character varying": String,
@@ -69,7 +41,6 @@ def make_resolver(schema_name, table_name, gql_type):
         # TODO: how to we get the current user
         # TODO: dynamic db name
         conn = get_object_or_404(DbConnectionModel, id_name="perfectly")
-        print(list_schemas_tables_columns(connection_object=conn.to_connection_dict()))
         query = f'SELECT * FROM "{schema_name}"."{table_name}"'
         graphql_db_result = graphql_db_activity(
             connection_object=conn.to_connection_dict(),
@@ -93,12 +64,16 @@ def generate_query(dynamic_types, schema_name="public"):
     return Query
 
 
-# @lru_cache(maxsize=1)
 def get_cached_schema():
-    db_schema = get_db_schema()
-    dynamic_types = generate_graphene_types_from_schema(db_schema)
-    DynamicQuery = generate_query(dynamic_types, schema_name="public")
-    return Schema(query=DynamicQuery)
+    cached_db_schema = cache.get('graphql_schema')
+    
+    # if not cached_db_schema:
+    # TODO: can you catch the schemas for reuse
+    conn = get_object_or_404(DbConnectionModel, id_name="perfectly")
+    graphql_schema = db_schema_for_graphql(connection_object=conn.to_connection_dict())
+    cached_db_schema = graphql_schema
 
-# Final schema to be used by your GraphQL view.
-schema = get_cached_schema()
+    dynamic_types = generate_graphene_types_from_schema(cached_db_schema)
+    DynamicQuery = generate_query(dynamic_types, schema_name="public")
+    new_schema = Schema(query=DynamicQuery)
+    return new_schema

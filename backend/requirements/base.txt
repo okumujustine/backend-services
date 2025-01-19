@@ -6,3 +6,4 @@ wheel==0.45.1
 psycopg[binary,pool]==3.2.3
 openai==1.59.7
 graphene-django==3.2.2
+django-redis==5.4.0
