@@ -27,11 +27,12 @@ class QueryView(APIView):
             if db_action_result['status'] == 400:
                 return Response(db_action_result, status=db_action_result['status'])
             return Response(db_action_result, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
         
         if (
             db_action_result and 
-            'ALTER' in db_action_result["status_message"] or 
-            'CREATE' in db_action_result["status_message"]
+            'ALTER' in db_action_result.get("status_message", "") or 
+            'CREATE' in db_action_result.get("status_message", "")
         ):
             # Build graphql api from db schema when  CREATEs or UPDATEs happens 
             # TODO: better way to build schema without blocking response
