@@ -69,7 +69,7 @@ export function SchemaExplorer() {
 
   return (
     <div className="p-2 space-y-1">
-      {!isLoading &&
+      {!isLoading && schemas &&
         schemas.map((schema) => (
           <div className="space-y-1" key={schema.title}>
             <div
