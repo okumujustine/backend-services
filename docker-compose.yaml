@@ -46,6 +46,8 @@ services:
       - ./frontend:/app
     ports:
       - "3003:3000"
+    environment:
+      - IN_DOCKER=true
     depends_on:
       - backend
 
