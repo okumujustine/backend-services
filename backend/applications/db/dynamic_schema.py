@@ -66,12 +66,12 @@ def generate_query(dynamic_types, schema_name="public"):
 
 def get_cached_schema():
     cached_db_schema = cache.get('graphql_schema')
-    
-    # if not cached_db_schema:
-    # TODO: can you catch the schemas for reuse
-    conn = get_object_or_404(DbConnectionModel, id_name="perfectly")
-    graphql_schema = db_schema_for_graphql(connection_object=conn.to_connection_dict())
-    cached_db_schema = graphql_schema
+
+    if not cached_db_schema:
+        conn = get_object_or_404(DbConnectionModel, id_name="perfectly")
+        graphql_schema = db_schema_for_graphql(connection_object=conn.to_connection_dict())
+        cached_db_schema = graphql_schema
+        cache.set('graphql_schema', cached_db_schema)
 
     dynamic_types = generate_graphene_types_from_schema(cached_db_schema)
     DynamicQuery = generate_query(dynamic_types, schema_name="public")

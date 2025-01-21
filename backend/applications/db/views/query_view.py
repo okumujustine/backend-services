@@ -10,6 +10,17 @@ from applications.db.models import DbConnectionModel
 from utils.connections.conn_util import db_activity
 
 
+from graphene_django.views import GraphQLView
+
+class DynamicGraphQLView(GraphQLView):
+    # TODO: improve it to only build schema when structure changes
+    def __init__(self, *args, **kwargs):
+        # TODO: ( find a better solution ) - overriding library method to add custom logic
+        self.schema = get_cached_schema()
+        super().__init__(*args, **kwargs)
+
+
+    
 class QueryView(APIView):
     def post(self, request, id_name):
         serializer = QuerySerializer(data=request.data)
@@ -34,9 +45,6 @@ class QueryView(APIView):
             'ALTER' in db_action_result.get("status_message", "") or 
             'CREATE' in db_action_result.get("status_message", "")
         ):
-            # Build graphql api from db schema when  CREATEs or UPDATEs happens 
-            # TODO: better way to build schema without blocking response
-            print("builind now")
             cache.delete('graphql_schema')
             get_cached_schema()
 
