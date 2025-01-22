@@ -1,9 +1,10 @@
-Build backend services on top of postgres database
+## Build backend services on top of postgres database 
+NB: ![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) `Still under development (early stages)`
 
-# Query Tool
+### Query Tool
 ![Screenshot 2025-01-22 at 7 18 40 AM](https://github.com/user-attachments/assets/50518684-166f-4a94-a42d-993597a7ed5c)
 
-# (Query with AI) Ask AI
+### (Query with AI) Ask AI
 ![Screenshot 2025-01-22 at 7 19 21 AM](https://github.com/user-attachments/assets/ce56a48f-9917-426c-a72a-edac1e514651)
 
 
