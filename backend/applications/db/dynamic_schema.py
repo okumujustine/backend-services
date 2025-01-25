@@ -1,16 +1,24 @@
 from django.core.cache import cache
 from django.shortcuts import get_object_or_404
-from graphene import List, Schema, String, Int, Float, Date, ObjectType
+import graphene
 
 from applications.db.models import DbConnectionModel
 from utils.connections.conn_util import graphql_db_activity
 from utils.connections.get_graphql_db_schema import db_schema_for_graphql
 
+# TEST all the types differently
 POSTGRES_TYPE_MAPPING_TO_GRAPHENE_TYPE_MAPPING = {
-    "character varying": String,
-    "integer": Int,
-    "numeric": Float,
-    "date": Date
+    "smallint": graphene.Int,
+    "integer": graphene.Int,
+    "bigint": graphene.Int,
+    "decimal": graphene.Float,
+    "numeric": graphene.Float,
+    "character varying": graphene.String,
+    "real": graphene.Float,
+    "date": graphene.Date,
+    "text": graphene.String,
+    "bool": graphene.Boolean,
+    "uuid": graphene.String,
 }
 
 def map_postgres_type_to_graphene(data_type: str):
