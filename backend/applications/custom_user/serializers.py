@@ -14,5 +14,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = ('email', 'first_name', 'last_name', 'password')
 
     def create(self, validated_data):
-        user = CustomUser.objects.create_user(**validated_data)
-        return user
+        user = CustomUser.objects.filter(email=validated_data["email"]).first()
+        if user:
+            raise serializers.ValidationError({"error": f"{validated_data['email']} already exists"})
+        created_user = CustomUser.objects.create_user(**validated_data)
+        return created_user

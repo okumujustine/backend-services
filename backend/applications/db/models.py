@@ -48,3 +48,9 @@ class TableDataType(models.Model):
         db_table = 'table_data_type'
         verbose_name = 'Table Data Type'
         verbose_name_plural = 'Table Data Types'
+
+
+class UserDBSchema(models.Model):
+    schema_name = models.CharField(max_length=100, unique=True)
+    user_give_name = models.CharField(max_length=100)
+    owner = models.ForeignKey(UserModel, on_delete=models.CASCADE)
