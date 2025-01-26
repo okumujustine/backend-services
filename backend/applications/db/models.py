@@ -1,6 +1,10 @@
 import uuid
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.contrib.auth import get_user_model
+from django.db import connection
+
 
 UserModel = get_user_model()
 
@@ -51,6 +55,34 @@ class TableDataType(models.Model):
 
 
 class UserDBSchema(models.Model):
-    schema_name = models.CharField(max_length=100, unique=True)
+    schema_name = models.CharField(max_length=100, unique=True, null=True)
     user_give_name = models.CharField(max_length=100)
     owner = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'user_db_schema'
+        verbose_name = 'User DB Schema'
+        verbose_name_plural = 'User DB Schemas'
+
+
+
+# Signal to create a user db schema after creating a user
+@receiver(post_save, sender=UserModel)
+def create_user_db_schema(sender, instance, created, **kwargs):
+    if created:
+        UserDBSchema.objects.create(
+            owner=instance, 
+            user_give_name="default",
+        )
+
+# Signal to create a postgres schema after creating a user db schema
+@receiver(post_save, sender=UserDBSchema)
+def create_postgres_schema(sender, instance, created, **kwargs):
+    if created:
+        identifier = uuid.uuid4().hex[:8]
+        formatted_user_email = instance.owner.email.replace("@", "_").replace(".", "_")
+        instance.schema_name = f"{formatted_user_email}_{instance.user_give_name}_{identifier}"
+        instance.save()
+
+        with connection.cursor() as cursor:
+            cursor.execute(f"CREATE SCHEMA {instance.schema_name}")
